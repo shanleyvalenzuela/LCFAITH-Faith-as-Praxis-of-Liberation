@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fourfold Dialogue — Faith as Liberation, Lived</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f4ef;
+    --paper-warm:#ebe7df;
+    --ink:#1f2937;
+    --ink-soft:#4b5563;
+    --head:#23395d;   --head-tint:#eceff4;
+    --heart:#4b5f78;  --heart-tint:#f0f2f5;
+    --hands:#5e6b77;  --hands-tint:#eceff1;
+    --life:#3f4b57;   --life-tint:#eef0f2;
+    --muted:#9aa1a9;
+    --rule: rgba(42,36,32,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  /* paper grain */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    opacity:0.05;
+    z-index:9999;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0; font-weight:600;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+  .lede{max-width:640px;}
+  section{position:relative;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- fixed nav dots ---------- */
+  .railnav{
+    position:fixed; right:26px; top:50%; transform:translateY(-50%);
+    z-index:500; display:flex; flex-direction:column; gap:18px;
+  }
+  .railnav a{
+    display:flex; align-items:center; gap:8px;
+    text-decoration:none; color:var(--ink);
+    font-family:'IBM Plex Mono',monospace; font-size:0.62rem; letter-spacing:0.08em;
+  }
+  .railnav .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--muted); border:1.5px solid var(--muted);
+    transition:background .35s, border-color .35s, transform .35s;
+  }
+  .railnav .label{opacity:0; transform:translateX(6px); transition:opacity .25s, transform .25s;}
+  .railnav a:hover .label{opacity:0.75; transform:translateX(0);}
+  .railnav a.active .dot{transform:scale(1.35);}
+  .railnav a[data-c="head"].active .dot{background:var(--head); border-color:var(--head);}
+  .railnav a[data-c="heart"].active .dot{background:var(--heart); border-color:var(--heart);}
+  .railnav a[data-c="hands"].active .dot{background:var(--hands); border-color:var(--hands);}
+  .railnav a[data-c="life"].active .dot{background:var(--life); border-color:var(--life);}
+  @media (max-width:760px){ .railnav{display:none;} }
+
+  /* ---------- mandala ---------- */
+  .mandala{display:block; margin:0 auto;}
+  .petal{transform-origin:100px 100px; transition:fill 1s ease, opacity 1s ease;}
+  .petal.dim{fill:var(--muted); opacity:.28;}
+  .petal.p-head.lit{fill:var(--head); opacity:1;}
+  .petal.p-heart.lit{fill:var(--heart); opacity:1;}
+  .petal.p-hands.lit{fill:var(--hands); opacity:1;}
+  .petal.p-life.lit{fill:var(--life); opacity:1;}
+  .mandala .hub{fill:var(--ink);}
+  .spin-slow{animation:spin 60s linear infinite;}
+  @keyframes spin{from{transform:rotate(0)} to{transform:rotate(360deg)}}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:120px 24px 80px; gap:28px;
+    background:
+      linear-gradient(rgba(35,57,93,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(35,57,93,.04) 1px, transparent 1px),
+      radial-gradient(ellipse at 50% 0%, var(--paper-warm), var(--paper) 62%);
+    background-size:32px 32px,32px 32px,auto;
+  }
+  .hero h1{font-size:clamp(2.6rem,6vw,5rem); line-height:1.02; letter-spacing:-0.01em;}
+  .hero h1 em{font-style:italic; font-weight:500; color:var(--hands);}
+  .hero p.lede{font-size:1.15rem; color:var(--ink-soft); margin:0 auto;}
+  .scrollcue{
+    margin-top:10px; font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:.14em;
+    opacity:.55; display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .scrollcue .line{width:1px; height:40px; background:var(--ink); opacity:.4; animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:.15} 50%{opacity:.6}}
+
+  /* ---------- panels ---------- */
+  .panel{
+    padding:140px 0; border-top:3px solid var(--c);
+    background:linear-gradient(180deg,var(--tint),var(--paper));
+  }
+  .panel .grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center;
+  }
+  .panel.reverse .grid{direction:rtl;}
+  .panel.reverse .grid > *{direction:ltr;}
+  .art-holder{
+    reveal-target:true;
+  }
+  .art-holder svg{width:100%; height:auto; max-width:460px; display:block; margin:0 auto;}
+  .panel .num{
+    font-family:'Fraunces',serif; font-style:italic; font-size:5rem; line-height:1;
+    color:var(--c); opacity:.28; position:absolute; top:-40px; left:0;
+  }
+  .panel .content{position:relative;}
+  .panel .eyebrow{color:var(--c); opacity:1; font-weight:500;}
+  .panel h2{font-size:clamp(2.1rem,4vw,3.1rem); margin:10px 0 6px;}
+  .panel .sub{font-family:'Fraunces',serif; font-style:italic; font-size:1.05rem; color:var(--ink-soft); margin-bottom:22px;}
+  .panel p.body-text{font-size:1.06rem; color:var(--ink-soft); max-width:480px;}
+  .panel .connect{
+    margin-top:26px; padding:18px 20px; border-left:3px solid var(--c);
+    background:rgba(255,255,255,.62); box-shadow:0 10px 30px rgba(31,41,55,.06); font-family:'Fraunces',serif; font-style:italic; font-size:1.02rem;
+  }
+  @media (max-width:860px){
+    .panel{padding:90px 0;}
+    .panel .grid{grid-template-columns:1fr; gap:40px;}
+    .panel.reverse .grid{direction:ltr;}
+  }
+
+
+  .art-holder{position:relative;padding:18px;}
+  .art-holder::before{
+    content:"";position:absolute;inset:6% 3%;border:1px solid rgba(35,57,93,.18);
+    border-radius:28px;transform:rotate(-2deg);background:rgba(255,255,255,.28);
+    box-shadow:0 22px 50px rgba(31,41,55,.08);
+  }
+  .art-holder::after{
+    content:"";position:absolute;width:90px;height:90px;border-radius:50%;
+    right:6%;top:7%;border:1px dashed rgba(35,57,93,.25);
+  }
+  .art-holder svg{position:relative;z-index:1;filter:drop-shadow(0 12px 18px rgba(31,41,55,.10));}
+  .panel .content{padding:16px 0;}
+  .panel .body-text{line-height:1.75;}
+  .academic-note{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.72;margin-top:10px;}
+
+  /* reveal animation */
+  .reveal{opacity:0; transform:translateY(36px); transition:opacity .9s cubic-bezier(.2,.7,.3,1), transform .9s cubic-bezier(.2,.7,.3,1);}
+  .reveal.show{opacity:1; transform:translateY(0);}
+  .reveal.delay1.show{transition-delay:.12s;}
+  .reveal.delay2.show{transition-delay:.24s;}
+
+  /* ---------- reflection / closing ---------- */
+  .closing{
+    background:#172233; color:var(--paper); padding:150px 0 120px; text-align:center;
+  }
+  .closing .eyebrow{color:var(--paper); opacity:.6;}
+  .closing h2{font-size:clamp(2.2rem,4.4vw,3.4rem); margin:14px 0 30px; color:var(--paper);}
+  .closing p{max-width:700px; margin:0 auto 18px; color:#d9d2c2; font-size:1.08rem;}
+  .closing .mandala-wrap{margin:20px auto 40px;}
+  .closing .credit{margin-top:60px; font-family:'IBM Plex Mono',monospace; font-size:.68rem; letter-spacing:.1em; opacity:.45;}
+
+  ::selection{background:var(--hands); color:var(--paper);}
+</style>
+</head>
+<body>
+
+<nav class="railnav" id="railnav">
+  <a href="#head" data-c="head"><span class="dot"></span><span class="label">Head</span></a>
+  <a href="#heart" data-c="heart"><span class="dot"></span><span class="label">Heart</span></a>
+  <a href="#hands" data-c="hands"><span class="dot"></span><span class="label">Hands</span></a>
+  <a href="#life" data-c="life"><span class="dot"></span><span class="label">Life</span></a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="eyebrow reveal show">Four approaches to lived faith</div>
+
+  <svg class="mandala" id="hero-mandala" viewBox="0 0 200 200" width="180" height="180">
+    <g>
+      <path class="petal dim p-head"  d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z"/>
+      <path class="petal dim p-heart" d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(90 100 100)"/>
+      <path class="petal dim p-hands" d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(180 100 100)"/>
+      <path class="petal dim p-life"  d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(270 100 100)"/>
+      <circle class="hub" cx="100" cy="100" r="10"/>
+    </g>
+  </svg>
+
+  <h1 class="reveal show delay1">The Fourfold<br><em>Dialogue</em></h1>
+  <p class="lede reveal show delay2">Faith is expressed through belief, worship, action, and daily life. These four dialogues show how ideas become practices that shape people and communities.</p>
+
+  <div class="scrollcue"><span>SCROLL</span><span class="line"></span></div>
+</header>
+
+<!-- ============ A. HEAD ============ -->
+<section class="panel" id="head" style="--c:var(--head); --tint:var(--head-tint);">
+  <div class="wrap">
+    <div class="grid">
+      <div class="content reveal">
+        <div class="num">I</div>
+        <div class="eyebrow">Dialogue of Doctrine · Head</div>
+        <h2>Understanding</h2>
+        <div class="sub">Faith seeking understanding</div>
+        <p class="body-text">The dialogue of doctrine focuses on understanding faith through study and reflection. It asks how religious teachings relate to justice, human dignity, and the experiences of marginalized people.</p>
+        <div class="connect"><strong>Example:</strong> A student studies Church teachings on human dignity, then uses these ideas to explain why workers should receive fair wages and safe working conditions.</div><div class="academic-note">Doctrine applied to a social issue</div>
+      </div>
+      <div class="art-holder reveal delay1">
+        <svg viewBox="0 0 460 420" class="art-head">
+          <defs>
+            <radialGradient id="wash-head" cx="50%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#34456e" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#34456e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="230" cy="190" r="190" fill="url(#wash-head)"/>
+          <!-- tree canopy -->
+          <path d="M230 60 C160 60 130 120 150 160 C110 165 90 210 120 245 C100 270 115 310 155 310 L305 310 C345 310 360 270 340 245 C370 210 350 165 310 160 C330 120 300 60 230 60 Z" fill="#34456e" opacity="0.85"/>
+          <rect x="222" y="300" width="16" height="70" fill="#5b4632"/>
+          <!-- teacher figure -->
+          <circle cx="230" cy="250" r="16" fill="#e8dcc4"/>
+          <path d="M205 270 Q230 250 255 270 L260 330 Q230 345 200 330 Z" fill="#eee6d4"/>
+          <!-- students seated in arc -->
+          <g fill="#f3eee1" stroke="#34456e" stroke-width="2">
+            <circle cx="140" cy="340" r="11"/><path d="M125 355 Q140 345 155 355 L157 385 Q140 393 123 385 Z"/>
+            <circle cx="185" cy="352" r="11"/><path d="M170 367 Q185 357 200 367 L202 392 Q185 399 168 392 Z"/>
+            <circle cx="275" cy="352" r="11"/><path d="M260 367 Q275 357 290 367 L292 392 Q275 399 258 392 Z"/>
+            <circle cx="320" cy="340" r="11"/><path d="M305 355 Q320 345 335 355 L337 385 Q320 393 303 385 Z"/>
+          </g>
+          <!-- open scroll -->
+          <rect x="205" y="222" width="50" height="30" rx="4" fill="#f7f2e4" stroke="#34456e" stroke-width="2"/>
+          <line x1="212" y1="230" x2="248" y2="230" stroke="#34456e" stroke-width="1.5"/>
+          <line x1="212" y1="237" x2="248" y2="237" stroke="#34456e" stroke-width="1.5"/>
+          <line x1="212" y1="244" x2="238" y2="244" stroke="#34456e" stroke-width="1.5"/>
+          <!-- radiant idea lines -->
+          <g stroke="#34456e" stroke-width="2" opacity="0.55">
+            <line x1="230" y1="205" x2="230" y2="188"/>
+            <line x1="212" y1="212" x2="200" y2="198"/>
+            <line x1="248" y1="212" x2="260" y2="198"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ B. HEART ============ -->
+<section class="panel reverse" id="heart" style="--c:var(--heart); --tint:var(--heart-tint);">
+  <div class="wrap">
+    <div class="grid">
+      <div class="art-holder reveal delay1">
+        <svg viewBox="0 0 460 420" class="art-heart">
+          <defs>
+            <radialGradient id="wash-heart" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#c08a2e" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#c08a2e" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="230" cy="190" r="190" fill="url(#wash-heart)"/>
+          <!-- circle of praying figures -->
+          <g fill="#f7f0dc" stroke="#c08a2e" stroke-width="2">
+            <circle cx="150" cy="260" r="13"/><path d="M133 278 Q150 262 167 278 L170 320 Q150 330 130 320 Z"/>
+            <circle cx="230" cy="235" r="13"/><path d="M213 253 Q230 237 247 253 L250 300 Q230 312 210 300 Z"/>
+            <circle cx="310" cy="260" r="13"/><path d="M293 278 Q310 262 327 278 L330 320 Q310 330 290 320 Z"/>
+          </g>
+          <!-- folded hands hint on center figure -->
+          <path d="M222 275 L230 262 L238 275 Z" fill="#c08a2e"/>
+          <!-- candle cluster -->
+          <g>
+            <rect x="120" y="335" width="8" height="26" rx="2" fill="#e8dcc4"/>
+            <ellipse cx="124" cy="330" rx="4" ry="8" fill="#c08a2e"/>
+            <rect x="332" y="330" width="8" height="31" rx="2" fill="#e8dcc4"/>
+            <ellipse cx="336" cy="325" rx="4" ry="8" fill="#c08a2e"/>
+            <rect x="225" y="345" width="8" height="21" rx="2" fill="#e8dcc4"/>
+            <ellipse cx="229" cy="340" rx="4" ry="8" fill="#c08a2e"/>
+          </g>
+          <!-- rising incense / prayer lines -->
+          <g stroke="#c08a2e" stroke-width="2" fill="none" opacity="0.5">
+            <path d="M230 200 C220 180 240 165 230 145 C220 125 240 112 232 95"/>
+            <path d="M150 235 C144 218 158 205 150 188"/>
+            <path d="M310 235 C316 218 302 205 310 188"/>
+          </g>
+        </svg>
+      </div>
+      <div class="content reveal">
+        <div class="num">II</div>
+        <div class="eyebrow">Dialogue of Worship · Heart</div>
+        <h2>Communion</h2>
+        <div class="sub">Prayer reflects and shapes belief</div>
+        <p class="body-text">The dialogue of worship shows how prayer brings people together. Through shared rituals, a community expresses hope, grief, gratitude, and commitment.</p>
+        <div class="connect"><strong>Example:</strong> During a community prayer service, people pray for families affected by a typhoon and organize a donation drive after the gathering.</div><div class="academic-note">Prayer leading to shared concern</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ C. HANDS ============ -->
+<section class="panel" id="hands" style="--c:var(--hands); --tint:var(--hands-tint);">
+  <div class="wrap">
+    <div class="grid">
+      <div class="content reveal">
+        <div class="num">III</div>
+        <div class="eyebrow">Dialogue of Praxis · Hands</div>
+        <h2>Action</h2>
+        <div class="sub">Faith shown through action</div>
+        <p class="body-text">The dialogue of praxis focuses on action. It includes service, advocacy, and participation in efforts that address poverty, inequality, and other social concerns.</p>
+        <div class="connect"><strong>Example:</strong> Students volunteer in a feeding program, prepare learning materials for children, and speak with community leaders about the needs of local families.</div><div class="academic-note">Faith expressed through action</div>
+      </div>
+      <div class="art-holder reveal delay1">
+        <svg viewBox="0 0 460 420" class="art-hands">
+          <defs>
+            <radialGradient id="wash-hands" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#a8452b" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#a8452b" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="230" cy="190" r="190" fill="url(#wash-hands)"/>
+          <!-- basket -->
+          <path d="M175 250 L285 250 L270 300 L190 300 Z" fill="#e8c079" stroke="#a8452b" stroke-width="2"/>
+          <path d="M175 250 Q230 265 285 250" fill="none" stroke="#a8452b" stroke-width="2"/>
+          <circle cx="205" cy="245" r="5" fill="#f2eee1"/><circle cx="225" cy="240" r="5" fill="#f2eee1"/>
+          <circle cx="245" cy="243" r="5" fill="#f2eee1"/><circle cx="260" cy="246" r="5" fill="#f2eee1"/>
+          <!-- giving hand -->
+          <path d="M150 275 C165 260 190 260 200 275 L195 292 C180 300 160 296 150 285 Z" fill="#e8dcc4" stroke="#a8452b" stroke-width="2"/>
+          <!-- receiving hand -->
+          <path d="M310 280 C295 265 270 265 260 280 L265 297 C280 305 300 301 310 290 Z" fill="#e8dcc4" stroke="#a8452b" stroke-width="2"/>
+          <!-- marching feet path -->
+          <g stroke="#a8452b" stroke-width="3" stroke-linecap="round">
+            <line x1="130" y1="360" x2="150" y2="345"/>
+            <line x1="175" y1="365" x2="195" y2="348"/>
+            <line x1="220" y1="368" x2="240" y2="350"/>
+            <line x1="265" y1="365" x2="285" y2="348"/>
+            <line x1="310" y1="360" x2="330" y2="345"/>
+          </g>
+          <!-- placard -->
+          <rect x="330" y="230" width="60" height="42" rx="3" fill="#f7f2e4" stroke="#a8452b" stroke-width="2"/>
+          <line x1="360" y1="272" x2="360" y2="310" stroke="#5b4632" stroke-width="4"/>
+          <line x1="340" y1="244" x2="380" y2="244" stroke="#a8452b" stroke-width="2"/>
+          <line x1="340" y1="254" x2="372" y2="254" stroke="#a8452b" stroke-width="2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ D. LIFE ============ -->
+<section class="panel reverse" id="life" style="--c:var(--life); --tint:var(--life-tint);">
+  <div class="wrap">
+    <div class="grid">
+      <div class="art-holder reveal delay1">
+        <svg viewBox="0 0 460 420" class="art-life">
+          <defs>
+            <radialGradient id="wash-life" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#3f5d3d" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#3f5d3d" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="230" cy="190" r="190" fill="url(#wash-life)"/>
+          <!-- simple house -->
+          <path d="M150 260 L230 200 L310 260 Z" fill="#3f5d3d"/>
+          <rect x="165" y="260" width="130" height="90" fill="#eee6d4" stroke="#3f5d3d" stroke-width="2"/>
+          <rect x="215" y="300" width="30" height="50" fill="#3f5d3d"/>
+          <rect x="180" y="278" width="22" height="22" fill="#dfe7db" stroke="#3f5d3d" stroke-width="1.5"/>
+          <rect x="258" y="278" width="22" height="22" fill="#dfe7db" stroke="#3f5d3d" stroke-width="1.5"/>
+          <!-- family at table in front -->
+          <rect x="190" y="352" width="80" height="8" fill="#5b4632"/>
+          <rect x="196" y="360" width="4" height="24" fill="#5b4632"/>
+          <rect x="260" y="360" width="4" height="24" fill="#5b4632"/>
+          <g fill="#f3eee1" stroke="#3f5d3d" stroke-width="2">
+            <circle cx="205" cy="335" r="10"/><path d="M192 350 Q205 340 218 350 L219 360 Q205 366 191 360 Z"/>
+            <circle cx="255" cy="335" r="10"/><path d="M242 350 Q255 340 268 350 L269 360 Q255 366 241 360 Z"/>
+            <circle cx="230" cy="325" r="8"/><path d="M219 338 Q230 330 241 338 L241 348 Q230 353 219 348 Z"/>
+          </g>
+          <!-- small tree of life beside house -->
+          <path d="M355 300 C340 300 335 280 350 270 C340 258 350 240 365 245 C370 230 390 230 392 248 C405 245 412 262 400 272 C412 282 402 300 388 296 C390 312 365 315 355 300 Z" fill="#3f5d3d" opacity="0.8"/>
+          <rect x="368" y="296" width="10" height="40" fill="#5b4632"/>
+          <!-- neighbor over a low fence -->
+          <line x1="60" y1="330" x2="140" y2="330" stroke="#5b4632" stroke-width="4"/>
+          <line x1="70" y1="330" x2="70" y2="300" stroke="#5b4632" stroke-width="4"/>
+          <line x1="130" y1="330" x2="130" y2="300" stroke="#5b4632" stroke-width="4"/>
+          <circle cx="95" cy="285" r="9" fill="#f3eee1" stroke="#3f5d3d" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="content reveal">
+        <div class="num">IV</div>
+        <div class="eyebrow">Dialogue of Life · Everyday Experience</div>
+        <h2>Everyday Ground</h2>
+        <div class="sub">Faith tested in daily experience</div>
+        <p class="body-text">The dialogue of life examines how faith is practiced in ordinary situations. Family decisions, work, education, illness, and community relationships reveal whether faith is truly lived.</p>
+        <div class="connect"><strong>Example:</strong> A family with a limited budget chooses to share food with a sick neighbor and supports one another while facing financial difficulties.</div><div class="academic-note">Faith practiced in daily life</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REFLECTION / CLOSING ============ -->
+<section class="closing" id="reflection">
+  <div class="wrap">
+    <div class="eyebrow reveal">Conclusion</div>
+    <div class="mandala-wrap reveal delay1">
+      <svg class="mandala spin-slow" id="closing-mandala" viewBox="0 0 200 200" width="140" height="140">
+        <g>
+          <path class="petal p-head lit"  d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z"/>
+          <path class="petal p-heart lit" d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(90 100 100)"/>
+          <path class="petal p-hands lit" d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(180 100 100)"/>
+          <path class="petal p-life lit"  d="M100,96 C118,70 118,26 100,4 C82,26 82,70 100,96 Z" transform="rotate(270 100 100)"/>
+          <circle class="hub" cx="100" cy="100" r="10" fill="var(--paper)"/>
+        </g>
+      </svg>
+    </div>
+    <h2 class="reveal delay1">What the Four Praxes Taught Me</h2>
+    <p class="reveal delay2">From these four praxes, I learned that faith cannot remain only in what I know or say. Doctrine helps me understand what I believe, worship helps me reflect and connect with others, praxis challenges me to act, and daily life shows whether I truly apply these values.</p>
+    <p class="reveal delay2">I also realized that faith becomes more meaningful when it responds to actual problems such as poverty, inequality, illness, and exclusion. These four praxes remind me to examine my choices, become more sensitive to the experiences of others, and express my beliefs through simple but concrete actions that may help my family, school, or community.</p>
+    <div class="credit">HEAD · HEART · HANDS · LIFE — four connected expressions of faith</div>
+  </div>
+</section>
+
+<script>
+  // Scroll-reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); } });
+  }, {threshold:0.18});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Section-based mandala + rail nav sync
+  const sectionMap = [
+    {id:'head', color:'head'},
+    {id:'heart', color:'heart'},
+    {id:'hands', color:'hands'},
+    {id:'life', color:'life'}
+  ];
+  const heroPetals = document.querySelectorAll('#hero-mandala .petal');
+  const railLinks = document.querySelectorAll('.railnav a');
+
+  const secIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const match = sectionMap.find(s=>s.id===entry.target.id);
+      if(!match) return;
+      const petal = document.querySelector('#hero-mandala .p-'+match.color);
+      const rail = document.querySelector('.railnav a[data-c="'+match.color+'"]');
+      if(entry.isIntersecting){
+        if(petal){ petal.classList.remove('dim'); petal.classList.add('lit'); }
+        if(rail){ railLinks.forEach(r=>r.classList.remove('active')); rail.classList.add('active'); }
+      }
+    });
+  }, {threshold:0.45});
+  sectionMap.forEach(s=>{
+    const el = document.getElementById(s.id);
+    if(el) secIO.observe(el);
+  });
+</script>
+</body>
+</html>
